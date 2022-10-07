@@ -1,0 +1,13 @@
+all: sor_N
+
+sor_N: sor_N.o matrix.o
+	gcc -o sor_N sor_N.o matrix.o -lm
+
+matrix.o: matrix.h matrix.c
+	gcc -c -o matrix.o matrix.c
+
+sor_N.o: sor_N.c
+	gcc -c -o sor_N.o sor_N.c -lm
+
+clean:
+	rm sor_N && rm *.o

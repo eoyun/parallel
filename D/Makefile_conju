@@ -1,0 +1,13 @@
+all: conju
+
+conju: conju.o matrix.o
+	gcc -o conju conju.o matrix.o -lm
+
+matrix.o: matrix.h matrix.c
+	gcc -c -o matrix.o matrix.c
+
+conju.o: conju.c
+	gcc -c -o conju.o conju.c -lm
+
+clean:
+	rm conju && rm *.o

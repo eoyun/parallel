@@ -1,0 +1,13 @@
+all: jacobi
+
+jacobi: jacobi.o matrix.o
+	dpcpp -o jacobi jacobi.o matrix.o -lm -g
+
+matrix.o: matrix.h matrix.c
+	dpcpp -c -o matrix.o matrix.c -g
+
+jacobi.o: jacobi.c
+	dpcpp -c -o jacobi.o jacobi.c -lm -g
+
+clean:
+	rm jacobi && rm *.o

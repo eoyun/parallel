@@ -1,0 +1,13 @@
+all: conju_N
+
+conju_N: conju_N.o matrix.o
+	gcc -o conju_N conju_N.o matrix.o -lm
+
+matrix.o: matrix.h matrix.c
+	gcc -c -o matrix.o matrix.c
+
+conju_N.o: conju_N.c
+	gcc -c -o conju_N.o conju_N.c -lm
+
+clean:
+	rm conju_N && rm *.o

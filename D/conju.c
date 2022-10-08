@@ -6,7 +6,7 @@
 
 
 int main(){
-	int Nbin = 100;
+	int Nbin = 256;
 	int i,j;
 	matrix X = matrix_create(Nbin,Nbin);
 	matrix R = matrix_create(Nbin,Nbin);
@@ -30,10 +30,10 @@ int main(){
 	// define X0 and b
 	for(i=0;i<Nbin+1;i++){
 		for(j=0;j<Nbin+1;j++){
-			matrix_set_element(&X,i,j,i*j);
+			matrix_set_element(&X,i,j,0);
 			x = (double) i/Nbin;	
 			y = (double) j/Nbin;	
-			f_ele = sinf(x * PI)*cosf(y * PI);
+			f_ele = sin(x * PI)*cos(y * PI);
 		//	printf("x is %f, y is %f ; f is %f\n",x,y,f_ele);
 			matrix_set_element(&F,i,j,f_ele);	
 		}
@@ -56,7 +56,7 @@ int main(){
                         else x4 = get_element(&X,i,j+1);
 			x0 = get_element(&X,i,j);
                         f_ele = get_element(&F,i,j);
-                        r = (4*x0 - x1 - x2 - x3 - x4)*Nbin*Nbin + f_ele;
+                        r = (4*x0 - x1 - x2 - x3 - x4) + f_ele/Nbin/Nbin;
                         //r = (4*x0 - x1 - x2 - x3 - x4) + f_ele;
 			
                         matrix_set_element(&R,i,j,r);
@@ -80,7 +80,7 @@ int main(){
                         if (j==Nbin) x4 = 0;
                         else x4 = get_element(&P,i,j+1);
 			x0 = get_element(&P,i,j);
-			p_square = (x1+x2+x3+x4-4*x0)*Nbin*Nbin;
+			p_square = (x1+x2+x3+x4-4*x0);
 			//p_square = (x1+x2+x3+x4-4*x0);
 			alpha_deno += get_element(&P,i,j)*p_square;
 		}
@@ -88,7 +88,7 @@ int main(){
 	alpha = alpha_numer/alpha_deno;
 	// iteration start 1.x 2.r 3.p 4.alpha & beta
 	acc=accuracy(&X);
-	while(acc>0.000000001){
+	while(acc>0.00001){
 		for (i=0;i<Nbin+1;i++){
 			for (j=0;j<Nbin+1;j++){
 				x_tmp = get_element(&X,i,j) + alpha * get_element(&P,i,j);
@@ -117,7 +117,7 @@ int main(){
 		                else x4 = get_element(&P,i,j+1);
 				x0 = get_element(&P,i,j);
 		                //f_ele = get_element(&F,i,j);
-		                r = alpha*(4*x0 - x1 - x2 - x3 - x4)*Nbin*Nbin + get_element(&R,i,j);
+		                r = alpha*(4*x0 - x1 - x2 - x3 - x4) + get_element(&R,i,j);
 		                //r = (4*x0 - x1 - x2 - x3 - x4) + f_ele;
 				matrix_set_element(&R,i,j,r);
 				//printf("%f\n",r);
@@ -150,7 +150,7 @@ int main(){
 		                if (j==Nbin) x4 = 0;
 		                else x4 = get_element(&P,i,j+1);
 				x0 = get_element(&P,i,j);
-				p_square = (x1+x2+x3+x4-4*x0)*Nbin*Nbin;
+				p_square = (x1+x2+x3+x4-4*x0);
 				//p_square = (x1+x2+x3+x4-4*x0);
 				alpha_deno += get_element(&P,i,j)*p_square;
 				

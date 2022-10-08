@@ -67,7 +67,7 @@ int main(){
 		acc_com = accuracy_compare(&U,&U_tmp);
 		printf("iteration number is %d, accuracy is %f, com accuracy is %f\n",iter,acc,acc_com);
 		if (iter==100000) break;
-		acc = accuracy(&U);
+		acc = accuracy_N(&U);
 		iter+=1;
 		//printf("this is dbg line; end of loop not close file\n",i,j);
 		//fclose(fp);

@@ -9,7 +9,7 @@ matrix matrix_create (int row, int col){
 	matrix matrix_;
 	matrix_.row = row;
 	matrix_.col = col;
-	matrix_.data =(float*) calloc((row+1) * (col+1), sizeof(float));
+	matrix_.data =(double*) calloc((row+1) * (col+1), sizeof(double));
 	return matrix_;
 
 }
@@ -34,12 +34,12 @@ void boundary_condition_N(matrix *matrix_){
 	for (i=1;i<matrix_->col;i++){ matrix_set_element(matrix_,0,i,0); matrix_set_element(matrix_,matrix_->row,i,0);}
 }
 
-float get_element (matrix *matrix_, int row, int col){
+double get_element (matrix *matrix_, int row, int col){
 	return matrix_->data[row*matrix_->col+col];
 	//return 3;
 }
 
-void matrix_set_element (matrix *matrix_,int row, int col, float data){
+void matrix_set_element (matrix *matrix_,int row, int col, double data){
 	matrix_->data[row*matrix_->col+col] = data;
 }
 
@@ -47,20 +47,20 @@ void matrix_delete (matrix *matrix_){
 	free(matrix_->data);
 }
 
-float accuracy (matrix *matrix_){
+double accuracy (matrix *matrix_){
 	int i,j;
-	float u_n, u_a;
-	float PI = 3.141592;
-	float x,y;
-	float sum=0;
-	float acc;
+	double u_n, u_a;
+	double PI = 3.141592;
+	double x,y;
+	double sum=0;
+	double acc;
 
 	for (i=0;i<matrix_->row+1;i++){
 		for (j=0;j<matrix_->col+1;j++){
 			u_n = get_element(matrix_,i,j);
-			x = (float) i/matrix_->row;
-			y = (float) j/matrix_->col;
-			u_a = -sinf(x * PI) * cosf(y * PI)/2/PI/PI;
+			x = (double) i/matrix_->row;
+			y = (double) j/matrix_->col;
+			u_a = -sin(x * PI) * cos(y * PI)/2/PI/PI;
 			sum += (u_n - u_a) * (u_n - u_a);
 			//printf("x is %f, y is %f, analytic sol is %f\n",x,y,u_a);
 		}
@@ -68,13 +68,13 @@ float accuracy (matrix *matrix_){
 	acc = pow(sum/(matrix_->row+1)/(matrix_->col+1),0.5);
 	return acc;
 }
-float accuracy_compare (matrix *M1, matrix *M2){
+double accuracy_compare (matrix *M1, matrix *M2){
 	int i,j;
-	float u_1, u_2;
-	float PI = 3.141592;
-	//float x,y;
-	float sum=0;
-	float acc;
+	double u_1, u_2;
+	double PI = 3.141592;
+	//double x,y;
+	double sum=0;
+	double acc;
 
 	for (i=0;i<M1->row+1;i++){
 		for (j=0;j<M2->col+1;j++){

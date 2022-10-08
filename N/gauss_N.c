@@ -34,7 +34,7 @@ int main(){
 	}
 	boundary_condition_N(&U);
 	//for (iter=0;iter<5;iter++){
-	acc = accuracy(&U);
+	acc = accuracy_N(&U);
 	iter = 0;
 	printf("hello?\n");
 	while(fabs(acc)>0.0001){
@@ -68,7 +68,7 @@ int main(){
 		//acc_com = accuracy_compare(&U,&U_tmp);
 		printf("iteration number is %d, accuracy is %f\n",iter,acc);
 		boundary_condition_N(&U);
-		acc = accuracy(&U);
+		acc = accuracy_N(&U);
 
 		iter+=1;
 		if (iter>100000){printf("something wrong\n"); break;}

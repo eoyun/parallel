@@ -35,12 +35,12 @@ void boundary_condition_N(matrix *matrix_){
 }
 
 double get_element (matrix *matrix_, int row, int col){
-	return matrix_->data[row*matrix_->col+col];
+	return matrix_->data[row*(matrix_->col+1)+col];
 	//return 3;
 }
 
 void matrix_set_element (matrix *matrix_,int row, int col, double data){
-	matrix_->data[row*matrix_->col+col] = data;
+	matrix_->data[row*(matrix_->col+1)+col] = data;
 }
 
 void matrix_delete (matrix *matrix_){
@@ -50,7 +50,7 @@ void matrix_delete (matrix *matrix_){
 double accuracy (matrix *matrix_){
 	int i,j;
 	double u_n, u_a;
-	double PI = 3.141592;
+	//double M_PI = 3.141592;
 	double x,y;
 	double sum=0;
 	double acc;
@@ -60,41 +60,18 @@ double accuracy (matrix *matrix_){
 			u_n = get_element(matrix_,i,j);
 			x = (double) i/matrix_->row;
 			y = (double) j/matrix_->col;
-			u_a = -sin(x * PI) * cos(y * PI)/2./PI/PI;
+			u_a = -sin(x * M_PI) * cos(y * M_PI)/2/M_PI/M_PI;
 			sum += (u_n - u_a) * (u_n - u_a);
 			//printf("x is %f, y is %f, analytic sol is %f\n",x,y,u_a);
 		}
 	}
-	acc = sqrt(sum/(matrix_->row+1)/(matrix_->col+1));
+	acc = pow(sum/(matrix_->row+1)/(matrix_->col+1),0.5);
 	return acc;
 }
-double accuracy_N (matrix *matrix_){
-	int i,j;
-	double u_n, u_a;
-	double PI = 3.141592;
-	double x,y;
-	double sum=0;
-	double acc;
-
-	for (i=0;i<matrix_->row+1;i++){
-		for (j=0;j<matrix_->col+1;j++){
-			u_n = get_element(matrix_,i,j);
-			x = (double) i/matrix_->row;
-			y = (double) (j-1)/matrix_->col;
-			u_a = -sin(x * PI) * cos(y * PI)/2/PI/PI;
-			sum += (u_n - u_a) * (u_n - u_a);
-			//printf("x is %f, y is %f, analytic sol is %f\n",x,y,u_a);
-		}
-	}
-	acc = sqrt(sum/(matrix_->row+1)/(matrix_->col+1));
-	return acc;
-}
-
-
 double accuracy_compare (matrix *M1, matrix *M2){
 	int i,j;
 	double u_1, u_2;
-	double PI = 3.141592;
+	//double M_PI = 3.141592;
 	//double x,y;
 	double sum=0;
 	double acc;

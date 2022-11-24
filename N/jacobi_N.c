@@ -6,7 +6,7 @@
 
 
 int main(){
-	int Nbin = 100;
+	int Nbin = 10;
 	int Nbin_x = Nbin;
 	int Nbin_y = Nbin+2;
 	int i,j,iter;
@@ -21,12 +21,12 @@ int main(){
 	//FILE *fp;
 	//char txtname[100];
 	//initial condition ; all zeros
-	or(i=0;i<Nbin_x+1;i++){
+	for(i=0;i<Nbin_x+1;i++){
 		for(j=0;j<Nbin_y+1;j++){
-			matrix_set_element(&U,i,j,i*j);
+			matrix_set_element(&U,i,j,1);
 			x = (double) i/Nbin;	
 			y = (double) (j-1)/Nbin;	
-			f_ele = sinf(x * PI)*cosf(y * PI);
+			f_ele = sin(x * M_PI)*cos(y * M_PI);
 		//	printf("x is %f, y is %f ; f is %f\n",x,y,f_ele);
 			matrix_set_element(&F,i,j,f_ele);	
 		}
@@ -34,7 +34,8 @@ int main(){
 	boundary_condition_N(&U);
 	acc = accuracy(&U);
 	iter =0;
-	while (fabs(acc)>0.0005){
+	//while (fabs(acc)>0.0005){
+	while (1==1){
 	//for (iter=0;iter<800;iter++){
 		//sprintf(txtname,"jacobi%d.txt",iter);
 		//fp = fopen(txtname,"wt");
@@ -67,7 +68,7 @@ int main(){
 		acc_com = accuracy_compare(&U,&U_tmp);
 		printf("iteration number is %d, accuracy is %f, com accuracy is %f\n",iter,acc,acc_com);
 		if (iter==100000) break;
-		acc = accuracy_N(&U);
+		acc = accuracy(&U);
 		iter+=1;
 		//printf("this is dbg line; end of loop not close file\n",i,j);
 		//fclose(fp);

@@ -6,7 +6,8 @@
 
 
 int main(){
-	int Nbin = 100;
+	int Nbin = 40;
+	double h = (double)1/Nbin;
 	int i,j,iter;
 	matrix U = matrix_create(Nbin,Nbin);
 	matrix U_tmp = matrix_create(Nbin,Nbin);
@@ -23,16 +24,26 @@ int main(){
 		for(j=0;j<Nbin+1;j++){
 			matrix_set_element(&U,i,j,i*j);
 			x = (double) i/Nbin;	
-			y = (double) j/Nbin;	
-			f_ele = sinf(x * PI)*cosf(y * PI);
+			y = (double) j/Nbin;
+			//printf("%d ",i*100+j);
+			//if (i==0 || i==Nbin||j==0||j==Nbin) matrix_set_element(&U,i,j,-sin(x*M_PI)*cos(y*M_PI)/M_PI/M_PI/2);	
+			f_ele = sin(x * M_PI)*cos(y * M_PI);
 		//	printf("x is %f, y is %f ; f is %f\n",x,y,f_ele);
 			matrix_set_element(&F,i,j,f_ele);	
 		}
+		//printf("\n");
 	}
 	boundary_condition_D(&U);
+	for (i=0;i<Nbin+1;i++){
+		for (j=0;j<Nbin+1;j++){
+			printf("%f ",get_element(&U,i,j));
+		} 
+		printf("\n");
+	}
 	acc = accuracy(&U);
 	iter =0;
-	while (fabs(acc)>0.0005){
+	//while (fabs(acc)>0.00001){
+	while (iter<10000){
 	//for (iter=0;iter<800;iter++){
 		//sprintf(txtname,"jacobi%d.txt",iter);
 		//fp = fopen(txtname,"wt");
@@ -54,18 +65,24 @@ int main(){
 				//if (j==Nbin) u4 = get_element(&U_tmp,i,j);
 				u4 = get_element(&U_tmp,i,j+1);
 				f_ele = get_element(&F,i,j);
-				u_tmp = (u1 + u2 + u3 + u4 - f_ele/Nbin/Nbin)/4;
+				u_tmp = (u1 + u2 + u3 + u4 - f_ele*h*h)/4;
 				
 				matrix_set_element(&U,i,j,u_tmp);
 				//fprintf(fp,"%f ",u_tmp);
 			}
 			//fprintf(fp,"\n");
 		}
-		boundary_condition_D(&U);
+		for (i=0;i<Nbin+1;i++){
+			for (j=0;j<Nbin+1;j++){
+				printf("%f ",get_element(&U,i,j));
+			} 
+			printf("\n");
+		}
+		//boundary_condition_D(&U);
 		acc_com = accuracy_compare(&U,&U_tmp);
+		acc = accuracy(&U);
 		printf("iteration number is %d, accuracy is %f, com accuracy is %f\n",iter,acc,acc_com);
 		if (iter==100000) break;
-		acc = accuracy(&U);
 		iter+=1;
 		//printf("this is dbg line; end of loop not close file\n",i,j);
 		//fclose(fp);

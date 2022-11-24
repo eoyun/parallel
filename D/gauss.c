@@ -22,7 +22,7 @@ int main(){
 	//initial condition ; all zeros
 	for(i=0;i<Nbin+1;i++){
 		for(j=0;j<Nbin+1;j++){
-			matrix_set_element(&U,i,j,i*j);
+			matrix_set_element(&U,i,j,1);
 			x = (float) i/Nbin;	
 			y = (float) j/Nbin;	
 			f_ele = sinf(x * PI)*cosf(y * PI);
@@ -35,7 +35,7 @@ int main(){
 	acc = accuracy(&U);
 	iter = 0;
 	printf("hello?\n");
-	while(fabs(acc)>0.0001){
+	while(fabs(acc)>0.00001){
 		sprintf(txtname,"gauss%d.txt",iter);
 		//fp = fopen(txtname,"wt");
 		

@@ -16,5 +16,4 @@ double get_element (matrix *matrix_, int row, int col);
 void matrix_set_element (matrix *matrix_,int row, int col, double data);
 void matrix_delete (matrix *matrix_);
 double accuracy (matrix *matrix_);
-double accuracy_N (matrix *matrix_);
 double accuracy_compare (matrix *M1,matrix *M2);

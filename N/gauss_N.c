@@ -13,28 +13,28 @@ int main(){
 	matrix U = matrix_create(Nbin_x,Nbin_y);
 	//matrix U_tmp = matrix_create(Nbin,Nbin);
 	matrix F = matrix_create(Nbin_x,Nbin_y);
-	float f_ele;
-	float x,y;
-	float u_tmp, u1, u2, u3, u4;
-	const float PI = 3.141592;	
+	double f_ele;
+	double x,y;
+	double u_tmp, u1, u2, u3, u4;
+	const double PI = 3.141592;	
 	FILE *fp;
-	float acc;
+	double acc;
 	char txtname[100];
 	
 	//initial condition ; all zeros
 	for(i=0;i<Nbin_x+1;i++){
 		for(j=0;j<Nbin_y+1;j++){
-			matrix_set_element(&U,i,j,i*j);
-			x = (float) i/Nbin;	
-			y = (float) (j-1)/Nbin;	
-			f_ele = sinf(x * PI)*cosf(y * PI);
+			matrix_set_element(&U,i,j,1);
+			x = (double) i/Nbin;	
+			y = (double) (j-1)/Nbin;	
+			f_ele = sin(x * PI)*cos(y * PI);
 		//	printf("x is %f, y is %f ; f is %f\n",x,y,f_ele);
 			matrix_set_element(&F,i,j,f_ele);	
 		}
 	}
 	boundary_condition_N(&U);
 	//for (iter=0;iter<5;iter++){
-	acc = accuracy_N(&U);
+	acc = accuracy(&U);
 	iter = 0;
 	printf("hello?\n");
 	while(fabs(acc)>0.0001){
@@ -68,7 +68,7 @@ int main(){
 		//acc_com = accuracy_compare(&U,&U_tmp);
 		printf("iteration number is %d, accuracy is %f\n",iter,acc);
 		boundary_condition_N(&U);
-		acc = accuracy_N(&U);
+		acc = accuracy(&U);
 
 		iter+=1;
 		if (iter>100000){printf("something wrong\n"); break;}

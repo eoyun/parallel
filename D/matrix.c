@@ -21,8 +21,16 @@ matrix matrix_copy (matrix *matrix_){
 }
 void boundary_condition_D(matrix *matrix_){
 	int i;
-	for (i=0;i<matrix_->row+1;i++){ matrix_set_element(matrix_,i,0,0); matrix_set_element(matrix_,i,matrix_->col,0);}
-	for (i=1;i<matrix_->col;i++){ matrix_set_element(matrix_,0,i,0); matrix_set_element(matrix_,matrix_->row,i,0);}
+	double bound;
+	for (i=0;i<matrix_->row+1;i++){
+		bound = sin(M_PI*i/matrix_->col)/2/M_PI/M_PI;
+		matrix_set_element(matrix_,i,0,-bound); 
+		matrix_set_element(matrix_,i,matrix_->col,bound);
+	}
+	for (i=1;i<matrix_->col;i++){ 
+		matrix_set_element(matrix_,0,i,0); 
+		matrix_set_element(matrix_,matrix_->row,i,0);
+	}
 
 }
 void boundary_condition_N(matrix *matrix_){
@@ -35,12 +43,12 @@ void boundary_condition_N(matrix *matrix_){
 }
 
 double get_element (matrix *matrix_, int row, int col){
-	return matrix_->data[row*matrix_->col+col];
+	return matrix_->data[row*(matrix_->col+1)+col];
 	//return 3;
 }
 
-void matrix_set_element (matrix *matrix_,int row, int col, double data){
-	matrix_->data[row*matrix_->col+col] = data;
+void matrix_set_element (matrix *matrix_,int row, int col, double data_){
+	matrix_->data[row*(matrix_->col+1)+col] = data_;
 }
 
 void matrix_delete (matrix *matrix_){
@@ -60,10 +68,12 @@ double accuracy (matrix *matrix_){
 			u_n = get_element(matrix_,i,j);
 			x = (double) i/matrix_->row;
 			y = (double) j/matrix_->col;
-			u_a = -sin(x * PI) * cos(y * PI)/2/PI/PI;
+			u_a = -sin(x * M_PI) * cos(y * M_PI)/2/M_PI/M_PI;
 			sum += (u_n - u_a) * (u_n - u_a);
+			printf("%f ",u_a);
 			//printf("x is %f, y is %f, analytic sol is %f\n",x,y,u_a);
 		}
+		printf("\n");
 	}
 	acc = pow(sum/(matrix_->row+1)/(matrix_->col+1),0.5);
 	return acc;
